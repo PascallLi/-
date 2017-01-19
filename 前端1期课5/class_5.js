@@ -223,27 +223,26 @@ s 是 string
 返回 bool, 如果 s 中包含的只有空格则返回 true, 否则返回 false
 */
 var is_space = function(s) {
-    // for(var i = 0; i < s.length; i++ ) {
-    //     if (s[i] != ' ') {
-    //         return false
-    //     }
-    // }
-    // return true
-    for (var i = 0; i < s.length; i++) {
-    var char = s[i]
-    if (char != ' ') {
-        return false
+    if (s == '') {
+      return false
     }
+    else {
+      for(var i = 0; i < s.length; i++ ) {
+          if (s[i] != ' ' ) {
+              log('失败')
+              return false
+          }
+      }
+    }
+    return true
 }
-return true
-}
-
 
 // 测试函数
 var test_is_space = function() {
     ensure(is_space(' '), 'center 测试 1')
     ensure(is_space('   '), 'center 测试 2')
     ensure(!is_space(''), 'center 测试 3')
+    log(!is_space(''))
     ensure(!is_space('gua'), 'center 测试 4')
 }
 
@@ -251,34 +250,55 @@ test_is_space()
 // 作业 6
 // 10 分钟做不出就看提示
 //
+/*
+s 是字符串
+检查 s 中是否只包含数字
+返回: bool, 如果 s 中包含的只有数字则返回 true, 否则返回 false
+*/
 var is_digit = function(s) {
-    /*
-    s 是字符串
-    检查 s 中是否只包含数字
-    返回: bool, 如果 s 中包含的只有数字则返回 true, 否则返回 false
-    */
-}
-
+  var a = String(1234567890)
+  for(var i = 0; i < s.length; i++ ) {
+      if (!a.includes(s[i])) {
+        log('s.includes(a[i]) =', s[i])
+        return false
+      }
+    }
+    return true
+  }
 // 测试函数
 var test_is_digit = function() {
     ensure(is_digit('123'), 'is_digit 测试 1')
+    // log('123', is_digit('123'))
     ensure(is_digit('0'), 'is_digit 测试 2')
+    // log('0', is_digit('0'))
     ensure(!is_digit('  '), 'is_digit 测试 3')
     ensure(!is_digit('1.1'), 'is_digit 测试 4')
     ensure(!is_digit('gua'), 'is_digit 测试 5')
 }
 
-
+    test_is_digit()
 // 作业 7
 // 10 分钟做不出就看提示
 //
-var strip_left = function(s) {
-    /*
-    s 是 string
-    返回一个「删除了字符串开始的所有空格」的字符串
+/*
+s 是 string
+返回一个「删除了字符串开始的所有空格」的字符串
 
-    返回 string
-    */
+返回 string
+*/
+var strip_left = function(s) {
+    if (s == '') {
+      return s
+    }
+    else {
+
+      for (var i = 0; i < s.length; i++) {
+        if (!s[i].includes(' ')) {
+          break
+        }
+      }
+      return s.slice(i)
+    }
 }
 
 // 测试函数
@@ -287,9 +307,10 @@ var test_strip_left = function() {
     ensure(strip_left(' gua  ') === 'gua  ', 'strip_left 测试 2')
     ensure(strip_left('') === '', 'strip_left 测试 3')
     ensure(strip_left('    ') === '', 'strip_left 测试 4')
+    log(strip_left('    '))
 }
 
-
+    test_strip_left()
 // 作业 8
 // 10 分钟做不出就看提示
 //
