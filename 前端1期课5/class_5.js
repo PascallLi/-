@@ -70,8 +70,6 @@ test_sample()
 // var name = 'gua'
 // name.includes(1) // 返回 false
 
-
-
 // 作业 1
 // 10 分钟做不出就看提示
 //
@@ -196,7 +194,11 @@ fillchar 是 长度为 1 的字符串, 默认为空格 ' '
 返回 string 类型
 */
 var center = function(s, width, fillchar=' ') {
-
+    var len = width - s.length
+    var left_n = Math.floor((len)/2)
+    var right_n = len - left_n
+    // log(nChar(fillchar, left_n) + s + nChar(fillchar, right_n))
+    return nChar(fillchar, left_n) + s + nChar(fillchar, right_n)
 }
 
 // 测试函数
@@ -207,19 +209,33 @@ var test_center = function() {
     ensure(center('gua', 6) === ' gua  ', 'center 测试 4')
 }
 
+test_center()
 
 
 // 作业 5
 // 10 分钟做不出就看提示
 // 注意, 看上面的资料, 介绍了一个 includes 函数
 //
-var is_space = function(s) {
-    /*
-    s 是 string
-    检查 s 中是否只包含空格
+/*
+s 是 string
+检查 s 中是否只包含空格
 
-    返回 bool, 如果 s 中包含的只有空格则返回 true, 否则返回 false
-    */
+返回 bool, 如果 s 中包含的只有空格则返回 true, 否则返回 false
+*/
+var is_space = function(s) {
+    // for(var i = 0; i < s.length; i++ ) {
+    //     if (s[i] != ' ') {
+    //         return false
+    //     }
+    // }
+    // return true
+    for (var i = 0; i < s.length; i++) {
+    var char = s[i]
+    if (char != ' ') {
+        return false
+    }
+}
+return true
 }
 
 
@@ -231,7 +247,7 @@ var test_is_space = function() {
     ensure(!is_space('gua'), 'center 测试 4')
 }
 
-
+test_is_space()
 // 作业 6
 // 10 分钟做不出就看提示
 //
