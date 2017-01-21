@@ -314,66 +314,102 @@ var test_strip_left = function() {
 // 作业 8
 // 10 分钟做不出就看提示
 //
-var strip_right = function(s) {
-    /*
-    s 是 string
-    返回一个「删除了字符串末尾的所有空格」的字符串
+/*
+s 是 string
+返回一个「删除了字符串末尾的所有空格」的字符串
 
-    返回 string
-    */
+返回 string
+*/
+var strip_right = function(s) {
+    if (s == '') {
+      return s
+    }
+    else {
+      for (var i = s.length -1 ; i >= 0; i--) {
+          log(i)
+        if (!s[i].includes(' ')) {
+          break
+        }
+      }
+      return s.slice(0, i + 1)
+    }
 }
 
 // 测试函数
 var test_strip_right = function() {
     ensure(strip_right('  gua') === '  gua', 'strip_right 测试 1')
+    console.log("strip_right('  gua')", strip_right('  gua'))
     ensure(strip_right(' gua  ') === ' gua', 'strip_right 测试 2')
     ensure(strip_right('') === '', 'strip_right 测试 3')
     ensure(strip_right('    ') === '', 'strip_right 测试 4')
 }
 
-
+    test_strip_right()
 // 作业 9
 // 10 分钟做不出就看提示
 //
-var strip = function(s) {
-    /*
-    s 是 string
-    返回一个「删除了字符串首尾的所有空格」的字符串
+/*
+s 是 string
+返回一个「删除了字符串首尾的所有空格」的字符串
 
-    返回 string
-    */
+返回 string
+*/
+var strip = function(s) {
+    var s = strip_left(s)
+    return strip_right(s)
 }
 
 // 测试函数
 var test_strip = function() {
     ensure(strip('  gua') === 'gua', 'strip 测试 1')
+    log(strip('  gua'))
     ensure(strip(' gua  ') === 'gua', 'strip 测试 2')
     ensure(strip('') === '', 'strip 测试 3')
     ensure(strip('    ') === '', 'strip 测试 4')
 }
-
+    test_strip()
 
 // 作业 10
 // 10 分钟做不出就看提示
 //
-var replace = function(s, old, newString) {
-    /*
-    3 个参数 s old newString 都是字符串
-    返回一个「将 s 中的 old 字符串替换为 newString 字符串」的字符串
-    假设 old 存在并且只出现一次
+/*
+3 个参数 s old newString 都是字符串
+返回一个「将 s 中的 old 字符串替换为 newString 字符串」的字符串
+假设 old 存在并且只出现一次
 
-    返回 string
-    */
-}
+返回 string
+*/
+var replace = function(s, old, newString) {
+    for (var i = 0; i< s.length; i++) {
+        var s_left = s.slice(i, i + old.length)
+        // log('s_left', s_left)
+        // if (s_left.includes(old)) {
+            // log('i==', i)
+            log('old', old)
+            if (s_left === old) {
+                log('i==', i)
+                break
+            }
+
+        // }
+    }
+        j = i +　old.length
+        log('j', j)
+        // log('s.slice(0, i)', s.slice(0, i))
+        return s.slice(0, i) + newString +　s.slice(j)
+    }
 
 
 // 测试函数
 var test_replace = function() {
     ensure(replace('hello, world', 'world', 'gua') === 'hello, gua', 'replace 测试 1')
+    log("replace('hello, world', 'world', 'gua')", replace('hello, world', 'world', 'gua'))
 	// ensure(replace('hello', 'world', 'gua') === 'hello', 'replace 测试 2')
     ensure(replace('hello', 'll', 'gua') === 'heguao', 'replace 测试 3')
+    log("replace('hello', 'll', 'gua')", replace('hello', 'll', 'gua'))
 }
 
+    test_replace()
 
 /*
 --------
