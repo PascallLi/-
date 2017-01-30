@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>pratice 8</title>
+        <style>
+            .done {
+                color : gray;
+                text-decoration: line-through;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="todo-main">
+            <div class="todo-form">
+                <input id='id-input-todo' type="text">
+                <button type="button" id='id-button-add'>Add</button>
+            </div>
+            <div id='id-div-container'>
+                <div class="todo-cell">
+                    <!-- <button class='todo-done'>完成</button>
+                    <button class='todo-delete'>删除</button> -->
+                </div>
+            </div>
+        </div>
+<script>
+var log = function() {
+    console.log.apply(null, arguments)
+}
+
+var todoList = []
+// 这样可以把数据存起来
+
+var addButton = document.querySelector('#id-button-add')
+addButton.addEventListener('click', function(){
+    var todoInput = document.querySelector('#id-input-todo')
+    var task = todoInput.value
+    // 生成todo对象
+    var todo = {
+        'task': task,
+        'time': currentTime()
+    }
+    todoList.push(todo)
+    var todoContainer = document.querySelector('#id-div-container')
+    // 使用模板字符串
+    var t = templateTodo(todo)
+    todoContainer.insertAdjacentHTML('beforeend', t);
+})
+
+var templateTodo = function(todo) {
+    var t = `
+    <div class="todo-cell">
+        <button type="button" name="button" class='todo-done'>完成</button>
+        <button type="button" name="button" class='todo-delete'>删除</button>
+        <span contenteditable="true">${todo.task}</span>
+        <span>${todo.time}</span>
+    </div>
+    `
+    return t
+}
+
+var todoContainer = document.querySelector('#id-div-container')
+todoContainer.addEventListener('click', function(event){
+    var target = event.target
+    if (target.classList.contains('todo-done')) {
+        var todoDiv = target.parentElement
+
+        toggleClass(todoDiv, 'done')
+    }
+    else if (target.classList.contains('todo-delete')) {
+        var todoDiv = target.parentElement
+        var index = indexOfElement(target)
+        todoDiv.remove()
+        // 把元素从todoList 中删掉,通过
+        todoList.splice(index, 1)
+    }
+})
+// 返回自己在父元素中的下标
+var indexOfElement = function(element) {
+    var parent = element.parentElement
+    for (var i = 0; i < parent.children.length; i++) {
+        var e = parent.children[i]
+        if (e === element) {
+            return i
+        }
+    }
+}
+var saveTodos = function() {
+    var s = JSON.stringify(todoList)
+    localStorage.todoList =  s
+}
+var loadTodos = function() {
+    var s = localStorage.todoList
+    return JSON.parse(s)
+}
+var toggleClass = function(element, className) {
+    if (element.classList.contains(className)) {
+        element.classList.remove(className)
+    }
+    else {
+        element.classList.add(className)
+    }
+}
+// 引入todo 和 localstorage
+var currentTime = function() {
+    var d = new Date()
+    var month = d.getMonth() + 1
+    var date = d.getDate()
+    var hours = d.getHours()
+    var minutes = d.getMinutes()
+    var seconds = d.getSeconds()
+    var timeString = `${month}/${date} ${hours}:${minutes}:${seconds}`
+    return timeString
+}
+
+
+// 程序加载后，加载todoList 并且添加到页面中
+todoList = loadTodos()
+    for (var i = 0; i < )
+</script>
+    </body>
+</html>

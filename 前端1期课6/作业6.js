@@ -139,9 +139,19 @@ log('处理小写字符串', lowercase1('ssASDdfsad'))
 它能正确处理带 大写字母 的字符串
 */
 var uppercase1 = function(s) {
-
+    var result = ""
+    for (var i = 0; i < s.length; i++) {
+        var index = find(upper, s[i])
+        if (index == -1) {
+            result += s[i]
+        }
+        else {
+            result += lower[index]
+        }
+    }
+    return result
 }
-
+log('处理大写字符串', uppercase1('ssASDdfsad'))
 
 /*
 作业 5
@@ -153,18 +163,62 @@ var uppercase1 = function(s) {
 右移 1 位
 */
 var encode1 = function(s) {
-
+    s = lowercase1(s)
+    log('s =', s)
+    var result = ""
+    for (var i = 0; i < s.length; i++) {
+        var index = find(upper, s[i])
+        log('index =', index)
+        if (index > 24) {
+            index -= 26
+        }
+        index += 1
+        result += lower[index]
+    }
+    return result
 }
-
+    ensure(encode1('afz') == 'bga', encode1('afz'))
+    log(encode1('cxy'))
 
 /*
 作业 6
 实现 decode1 函数, 把作业 5 加密的密码解密为明文并返回
 */
 var decode1 = function(s) {
-
+    var result = ""
+    for (var i = 0; i < s.length; i++) {
+        var index = find(lower, s[i])
+        log('index =', index)
+        if (index == 0) {
+            index += 26
+        }
+        index -= 1
+        result += lower[index]
+    }
+    return result
 }
+    ensure(decode1('bga') == 'afz', decode1('afz'))
 
+
+var ShiftChar = function(char, n) {
+    var lower = 'abcdefghijklmnopqrstuvwxyz'
+    var upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    var index = find(lower, char)
+    var index1 = find(upper, char)
+    if (index > -1) {
+        index = (index + n + 26) % 26
+        // log('index=', index)
+        return result =  lower[index]
+    }
+    else if (index1 > -1) {
+        index1 = (index1 + n + 26) % 26
+        // log('index1=', index1)
+        return result =  lower[index1]
+    }
+    else {
+         return result = char
+        }
+}
 
 /*
 作业 7
@@ -172,9 +226,13 @@ var decode1 = function(s) {
 多了一个参数 shift 表示移的位数
 */
 var encode2 = function(s, shift) {
-
+    var result = ""
+    for (var i = 0; i < s.length; i++) {
+        result += ShiftChar(s[i], shift)
+    }
+        return result
 }
-
+    encode2('aAbb12', 2)
 
 /*
 作业 8
@@ -182,9 +240,19 @@ var encode2 = function(s, shift) {
 多了一个参数 shift 表示移的位数
 */
 var decode2 = function(s, shift) {
-
+    var result = ""
+    for (var i = 0; i < s.length; i++) {
+        result += ShiftChar(s[i], -shift)
+    }
+        return result
 }
+    // decode2('BABBZ', 1)
 
+    var test_decode2 = function() {
+        ensure(decode2('W2玩儿3af$%(SD)z',1) === 'v2玩儿3ze$%(rc)y', decode2('W2玩儿3af$%(SD)z',1))
+        ensure(decode2('mW嗲2+*/.,xDW3c',5) === 'hr嗲2+*/.,syr3x', decode2('mW嗲2+*/.,xDW3c',5))
+    }
+    test_decode2()
 
 /*
 作业 9
@@ -217,13 +285,36 @@ https://www.zhihu.com/question/28324597
 如果没思路, 可看本文件最后的提示
 我把密码放在下面, 请解出原文
 */
+var upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 var code = 'VRPHWLPHV L ZDQW WR FKDW ZLWK BRX,EXW L KDYH QR UHDVRQ WR FKDW ZLWK BRX'
 
-var decode4 = function(s) {
 
+var rank = function(wordList) {
+    var score = 0
+    for (var i = 0; i < wordList.length; i++) {
+        var word = wordList[i]
+        if (words.includes(word)) {
+            score += 1
+        }
+    }
+    var r = score / wordList.length * 100
+    r = Math.floor(r)
+    log(`比率是 ${r}%`)
+    return score
+}
+var decode4 = function(s) {
+    for (var i = 0; i < upper.length; i++) {
+        var result = decode2(s, i)
+        log(result)
+        var wordList = result.split(' ')
+        var score = rank(wordList)
+        if (score > 10) {
+            log(result)
+        }
+    }
 }
 
-
+    decode4(code)
 
 // =======
 // 提示
