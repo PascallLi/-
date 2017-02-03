@@ -17,10 +17,10 @@
                 <button type="button" id='id-button-add'>Add</button>
             </div>
             <div id='id-div-container'>
-                <div class="todo-cell">
+                <!-- <div class="todo-cell"> -->
                     <!-- <button class='todo-done'>完成</button>
                     <button class='todo-delete'>删除</button> -->
-                </div>
+                <!-- </div> -->
             </div>
         </div>
 <script>
@@ -30,7 +30,12 @@ var log = function() {
 
 var todoList = []
 // 这样可以把数据存起来
-
+var insertTodo = function(todo) {
+    var todoContainer = document.querySelector('#id-div-container')
+    // 使用模板字符串
+    var t = templateTodo(todo)
+    todoContainer.insertAdjacentHTML('beforeend', t);
+}
 var addButton = document.querySelector('#id-button-add')
 addButton.addEventListener('click', function(){
     var todoInput = document.querySelector('#id-input-todo')
@@ -41,10 +46,8 @@ addButton.addEventListener('click', function(){
         'time': currentTime()
     }
     todoList.push(todo)
-    var todoContainer = document.querySelector('#id-div-container')
-    // 使用模板字符串
-    var t = templateTodo(todo)
-    todoContainer.insertAdjacentHTML('beforeend', t);
+    saveTodos()
+    insertTodo(todo)
 })
 
 var templateTodo = function(todo) {
@@ -60,33 +63,64 @@ var templateTodo = function(todo) {
 }
 
 var todoContainer = document.querySelector('#id-div-container')
+
+// 内容修改后刷新后可以正常显示
+todoContainer.addEventListener('keydown', function(event){
+    log('container keydown', event.target)
+    var target = event.target
+    if(event.key === 'Enter') {
+        target.blur()
+        // 失去焦点
+        event.preventDefault()
+        // 不插入回车
+        var index = indexOfElement(target.parentElement)
+        log('index==', index)
+        log('todoList==', todoList)
+        log('target.innerHTML是什么', target.innerHTML)
+        log('todoList[index] 是什么', todoList[index])
+        todoList[index].task = target.innerHTML
+        saveTodos()
+    }
+})
+
 todoContainer.addEventListener('click', function(event){
     var target = event.target
+    log('event', event)
     if (target.classList.contains('todo-done')) {
         var todoDiv = target.parentElement
-
         toggleClass(todoDiv, 'done')
     }
     else if (target.classList.contains('todo-delete')) {
+        log('target.classList是什么', target.classList)
+        log('target.parentElement是什么', target.parentElement)
         var todoDiv = target.parentElement
-        var index = indexOfElement(target)
+        var index = indexOfElement(todoDiv)
+        log('index=', index)
         todoDiv.remove()
-        // 把元素从todoList 中删掉,通过
+        // 把元素从todoList 中删掉,通过splice函数实现，1表示删除的数目
         todoList.splice(index, 1)
+        log('todoList=', todoList)
+        saveTodos()
     }
 })
+
 // 返回自己在父元素中的下标
 var indexOfElement = function(element) {
     var parent = element.parentElement
+    log('indexOfElement parent = ', parent)
     for (var i = 0; i < parent.children.length; i++) {
+        // parent.children = [div.todo-cell, div.todo-cell, div.todo-cell]
         var e = parent.children[i]
+        log('parent.children[i] == , i ==', e, i)
         if (e === element) {
+            log('i==', i)
             return i
         }
     }
 }
 var saveTodos = function() {
     var s = JSON.stringify(todoList)
+    log('localStorage', localStorage)
     localStorage.todoList =  s
 }
 var loadTodos = function() {
@@ -116,7 +150,10 @@ var currentTime = function() {
 
 // 程序加载后，加载todoList 并且添加到页面中
 todoList = loadTodos()
-    for (var i = 0; i < )
+    for (var i = 0; i < todoList.length; i++) {
+        var todo =  todoList[i]
+        insertTodo(todo)
+    }
 </script>
     </body>
 </html>
