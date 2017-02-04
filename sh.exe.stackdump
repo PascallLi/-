@@ -1,0 +1,8 @@
+Exception: STATUS_ACCESS_VIOLATION at eip=00AC00C8
+eax=FFFFFFFF ebx=B79CB831 ecx=B79CB831 edx=00000000 esi=032CCE64 edi=032CCDB4
+ebp=00AC006A esp=032CCD38 program=C:\Users\USER-PC\AppData\Local\Atlassian\SourceTree\git_local\usr\bin\sh.exe, pid 7476, thread unknown (0x3BD4)
+cs=0023 ds=002B es=002B fs=0053 gs=002B ss=002B
+Stack trace:
+Frame     Function  Args
+00AC006A  00AC00C8 (DA246C30, 00007FFE, 00AC0000, 00000000)
+End of stack trace

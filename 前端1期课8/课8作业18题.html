@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title></title>
+        <title>18课作业</title>
         <style media="screen">
             .done {
                 color: gary;
@@ -16,7 +16,7 @@
                 <input id="id-input-todo"type="text">
                 <button type="button" id="id-button-add">Add</button>
             </div>
-            <div class="id-div-container">
+            <div id="id-div-container">
 
             </div>
         </div>
@@ -30,7 +30,7 @@ var todoList = []
 var insertTodo = function(todo) {
     var todoContainer = document.querySelector('#id-div-container')
     var t = templateTodo(todo)
-    todoContainer.insertAdjacentHTML('beforend', t)
+    todoContainer.insertAdjacentHTML('beforeend', t)
 }
 // 检测Button按钮的点击事件,点击监听到之后，获取Input标签的值，放入todo对象中
 var addButton = document.querySelector('#id-button-add')
@@ -41,8 +41,8 @@ addButton.addEventListener('click', function(){
         'time': currentTime()
     }
     todoList.push(todo)
-    saveTodos()
     insertTodo(todo)
+    saveTodos()
 })
 
 var templateTodo = function(todo) {
@@ -70,6 +70,7 @@ var indexOfElement = function(element) {
 }
 
 // 从'完成'/'删除'按钮获得其中的元素判断是否包含相应class,然后找到父元素进行处理
+var todoContainer = document.querySelector('#id-div-container')
 todoContainer.addEventListener('click', function(event){
     var target = event.target
     if (target.classList.contains('todo-done')) {
@@ -78,22 +79,18 @@ todoContainer.addEventListener('click', function(event){
     }
     else if (target.classList.contains('todo-delete')) {
         var todoDiv = target.parentElement
-        var index = indexOfElement(todoDiv.parentElement)
+        var index = indexOfElement(todoDiv)
         todoDiv.remove()
         todoList.splice(index, 1)
+        saveTodos()
     }
 })
 
 
 // 修改函数中的task内容, 回车确认，保存
-var todoContainer = document.querySelector('#id-div-container')
-todoContainer.addEventListener('keydown', function(event){
-    var target = event.target
-    if (target.blur()) {
-        var index = indexOfElement(target.parentElement)
-        todoList[index].task = target.innerHTML
-        saveTodos()
-    }
+
+// todoContainer.addEventListener('keydown', function(event){
+    // blurHappen()
     // if (event.key === 'Enter') {
     //     target.blur()
     //     event.preventDefault()
@@ -101,8 +98,19 @@ todoContainer.addEventListener('keydown', function(event){
     //     todoList[index].task = target.innerHTML
     //     saveTodos()
     // }
-})
+// })
 
+var blurHappen = function() {
+    var todoTask = todoContainer.querySelector('.todo-cell')
+    todoContainer.addEventListener('blur', function(event){
+        var target = event.target
+        log('失去blur')
+        var index = indexOfElement(target.parentElement)
+        todoList[index].task = target.innerHTML
+        saveTodos()
+    }, true)
+}
+blurHappen()
 
 var toggleClass = function(element, classname) {
     if (element.classList.contains(classname)) {
