@@ -50,7 +50,8 @@ var templateTodo = function(todo) {
     <div class="todo-cell">
         <button type="button" name="button" class='todo-done'>完成</button>
         <button type="button" name="button" class='todo-delete'>删除</button>
-        <span contenteditable="true">${todo.task}</span>
+        <button type="button" name="button" class='todo-edit'>编辑</button>
+        <span class='todo-label' contenteditable="false">${todo.task}</span>
         <span>${todo.time}</span>
     </div>
     `
@@ -84,6 +85,13 @@ todoContainer.addEventListener('click', function(event){
         todoList.splice(index, 1)
         saveTodos()
     }
+    else if (target.classList.contains('todo-edit')) {
+        var cell = target.parentElement
+        var span = cell.children[3]
+        span.setAttribute('contenteditable', 'true')
+        // 点击完(编辑按钮)，会将指针聚焦在task上
+        span.focus()
+    }
 })
 
 
@@ -104,11 +112,14 @@ var blurHappen = function() {
     var todoTask = todoContainer.querySelector('.todo-cell')
     todoContainer.addEventListener('blur', function(event){
         var target = event.target
-        log('失去blur')
-        var index = indexOfElement(target.parentElement)
-        todoList[index].task = target.innerHTML
-        saveTodos()
-    }, true)
+        if (target.classList.contains('todo-label')) {
+            log('失去blur')
+            target.setAttribute('contenteditable', 'false')
+            var index = indexOfElement(target.parentElement)
+            todoList[index].task = target.innerHTML
+            saveTodos()
+        }
+        }, true)
 }
 blurHappen()
 

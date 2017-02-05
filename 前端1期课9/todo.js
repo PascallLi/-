@@ -183,8 +183,7 @@ var currentTime = function() {
 }
 
 
-var initTodos = function() {
-    todoList = loadTodos()
+     todoList = loadTodos()
     for (var i = 0; i < todoList.length; i++) {
         var todo = todoList[i]
         insertTodo(todo)
