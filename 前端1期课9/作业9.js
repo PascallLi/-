@@ -26,7 +26,7 @@ var arrayEquals = function(arr1, arr2) {
 
 var ensureEqual = function(a, b) {
     if (!arrayEquals(a, b)) {
-        log(`'测试失败少年', '错误输出='${a}, '正确输出='${b}`)
+        log(`'测试失败少年', '错误输出='${a}', '正确输出='${b}'`)
     }
     else {
         log('回答正确')
@@ -41,7 +41,9 @@ a 是一个 array
 例如 a 是 [1, 2, 3, 1, 3, 5]
 返回 [1, 2, 3, 5]
 */
+
 var unique = function(a) {
+    // 先复制数组到b, 判断b中数据是否存在于a,和a中数据是否不存在与新的list
     var list = []
     var b = a
     for (var i = 0; i < a.length; i++) {
@@ -98,118 +100,154 @@ ensureEqual(union([1,3,3,2,1,2,8],[1,3,2,5,6]), [1,3,2,8,5,6])
 
 // 作业 4
 //
+/*/
+a b 都是 array
+
+返回一个 array, 里面的元素是
+所有在 a 中有 b 中没有的元素
+这个 array 中不包含重复元素
+/*/
 var difference = function(a, b) {
-    /*/
-    a b 都是 array
-
-    返回一个 array, 里面的元素是
-    所有在 a 中有 b 中没有的元素
-    这个 array 中不包含重复元素
-    /*/
+    var list = []
+    for (var i = 0; i < a.length; i++) {
+        if (!b.includes(a[i]) && !list.includes(a[i])) {
+            list.push(a[i])
+        }
+    }
+    return list
 }
-
+    ensureEqual(difference([1,2,3,6,4,3,7,8], [2,3,4]), [1,6,7,8])
+    ensureEqual(difference([1,2,3,6,4,3,7,8], [2,3,4,7,8,8,8,6]), [1])
 
 // 作业 5
 //
+/*/
+a b 都是 array
+
+返回一个 array, 里面的元素是
+所有在 a b 中的非公共元素
+这个 array 中不包含重复元素
+/*/
 var differenceAll = function(a, b) {
-    /*/
-    a b 都是 array
-
-    返回一个 array, 里面的元素是
-    所有在 a b 中的非公共元素
-    这个 array 中不包含重复元素
-    /*/
+    c = difference(a, b)
+    d = difference(b, a)
+    return union(c, d)
 }
-
+    ensureEqual(differenceAll([1,2,3,6,4,3,7,8], [2,3,4]), [1,6,7,8])
+    ensureEqual(differenceAll([1,2,3,6,4,3,7,8], [1,9,10,2,3,4]), [9,10,6,7,8])
 
 // 作业 6
 //
+/*/
+a b 都是 array
+
+检查是否 a 中的每个元素都在 b 中出现
+返回 bool
+/*/
 var isSubset = function(a, b) {
-    /*/
-    a b 都是 array
-
-	检查是否 a 中的每个元素都在 b 中出现
-    返回 bool
-    /*/
+    var l = intersection(a,b)
+    return a.length === l.length
 }
-
 
 // 下面的题目都是 DOM 操作题目
 // =====
 //
 // 作业 7
 //
+/*
+element 是一个标签
+html 是一段 html 字符串
+把 html 作为子元素插入到 element 的末尾
+上课一直在用这个函数
+*/
 var appendHtml = function(element, html) {
-    /*
-    element 是一个标签
-    html 是一段 html 字符串
-    把 html 作为子元素插入到 element 的末尾
-    上课一直在用这个函数
-    */
+    return element.insertAdjacentHTML('beforeend', html)
 }
 
 
 // 作业 8
 //
+/*
+element 是一个标签
+eventName 是一个 string, 表示事件的名字
+callback 是一个函数
+用法如下, 假设 button 是一个标签
+bindEvent(button, 'click', function(){
+})
+*/
 var bindEvent = function(element, eventName, callback) {
-    /*
-    element 是一个标签
-    eventName 是一个 string, 表示事件的名字
-    callback 是一个函数
-    用法如下, 假设 button 是一个标签
-    bindEvent(button, 'click', function(){
-    })
-    */
+    return element.addEventListener(eventName, callback)
 }
 
 
 // 作业 9
 //
-var bindEventDelegate = function(element, eventName, callback, responseClass) {
-    /*
-    element 是一个标签
-    eventName 是一个 string, 表示事件的名字
-    callback 是一个函数
-    responseClass 是一个字符串
+/*
+element 是一个标签
+eventName 是一个 string, 表示事件的名字
+callback 是一个函数
+responseClass 是一个字符串
 
-    在 element 上绑定一个事件委托
-    只会响应拥有 responseClass 类的元素
-    */
+在 element 上绑定一个事件委托
+只会响应拥有 responseClass 类的元素
+*/
+var bindEventDelegate = function(element, eventName, callback, responseClass) {
+    element.addEventListener(eventname, function(event){
+        var target = event.target
+        if (target.classList.contains(responseClass)) {
+            callback(event)
+        }
+    })
 }
 
 
 // 作业 10
 //
+/*
+selector 是一个 string, 选择器, 有如下三种取值
+    1, 标签选择器, 如 'div'
+    2, class 选择器, 如 '.red'
+    3, id 选择器, 如 '#id-input-name'
+html 是一段 html 字符串
+把 html 作为子元素插入到 selector 选中的所有元素的末尾
+*/
 var append = function(selector, html) {
-    /*
-    selector 是一个 string, 选择器, 有如下三种取值
-        1, 标签选择器, 如 'div'
-        2, class 选择器, 如 '.red'
-        3, id 选择器, 如 '#id-input-name'
-    html 是一段 html 字符串
-    把 html 作为子元素插入到 selector 选中的所有元素的末尾
-    */
+    var form = document.querySelectorAll(selector)
+    for (var i = 0; i < form.length; i ++){
+        var e  = form[i]
+        e.insertAdjacentHTML('beforeend', html)
+    }
+
 }
 
 
 // 作业 11
 //
+/*
+selector 是一个 string, 选择器, 有如下三种取值
+    1, 标签选择器, 如 'div'
+    2, class 选择器, 如 '.red'
+    3, id 选择器, 如 '#id-input-name'
+eventName 是一个 string, 表示事件的名字
+callback 是一个函数
+responseClass 是一个字符串, 这个参数可以为空
+
+给 selector 选中的所有元素绑定 eventName 事件
+当 responseClass 给出的时候, callback 只会响应拥有 responseClass 类的元素
+当 responseClass 没有给的时候, callback 直接响应
+
+*/
 var bindAll = function(selector, eventName, callback, responseClass) {
-    /*
-    selector 是一个 string, 选择器, 有如下三种取值
-        1, 标签选择器, 如 'div'
-        2, class 选择器, 如 '.red'
-        3, id 选择器, 如 '#id-input-name'
-    eventName 是一个 string, 表示事件的名字
-    callback 是一个函数
-    responseClass 是一个字符串, 这个参数可以为空
-
-    给 selector 选中的所有元素绑定 eventName 事件
-    当 responseClass 给出的时候, callback 只会响应拥有 responseClass 类的元素
-    当 responseClass 没有给的时候, callback 直接响应
-
-    这题做不出来就放弃
-    */
+    var elements = document.querySelectorAll(selector)
+    for (var i = 0; i < elements.length; i++){
+        var element = elements[i]
+        element.addEventListener(eventName, function(event){
+            var target = event.target
+            if (target.classList.includes(responseClass)) {
+                callback(event)
+            }
+        })
+    }
 }
 
 
