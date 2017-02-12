@@ -24,7 +24,7 @@
 var id1 = document.querySelector('#id1')
 var id2 = document.querySelector('#id2')
 var id3 = document.querySelector('#id3')
-// 冒泡排序,先触发id3-id2-id1
+// 冒泡排序,先触发id3-id2-id1，用法就是绑定在外层事件id1，通过target寻找id3
 id1.addEventListener('click', function(event){
     console.log('click id1', event)
 })
@@ -37,7 +37,7 @@ id3.addEventListener('click', function(event){
     // event.cancelBubble = true
 })
 
-// 事件捕获是 addEventListener 的第三个参数 useCapture
+// 事件捕获是 addEventListener 的第三个参数 useCapture(true)
 id1.addEventListener('click', function(event){
     console.log('capture click id1', event)
 }, true)
@@ -69,12 +69,15 @@ r.send()
 var r = new XMLHttpRequest()
 // 设置请求方法和请求地址
 r.open('POST', '/login', true)
+// 这里用post为了是发送数据
 // 设置发送的数据的格式
 r.setRequestHeader('Content-Type', 'application/json')
 // 注册响应函数
 r.onreadystatechange = function() {
+    // 收到的响应只有4才是成功的
     if (r.readyState === 4) {
         console.log('state change', r, r.status, r.response)
+        // 得到的字符被编码，需要用JSON.parse()
         var response = JSON.parse(r.response)
         console.log('response', response)
     } else {

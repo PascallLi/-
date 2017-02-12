@@ -67,6 +67,7 @@ var primeNumbers = function() {
 */
 var Upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 var lower = 'abcdefghijklmnopqrstuvwxyz'
+// UpperFirst函数判断第一个字母在lower中的位置然后变成大写，将后面切分出来的
 var UpperFirst = function(start, s1, str, i) {
     for (var j = 0; j < lower.length; j++) {
         if (lower[j] == s1[0]) {
@@ -77,6 +78,7 @@ var UpperFirst = function(start, s1, str, i) {
     }
     return s1
 }
+// 拼接数组, 注意最前面第一个和最后一个数组
 var capString = function(str) {
     var s1 = ''
     var s = ''
@@ -107,69 +109,153 @@ capString(s)
 
 // 作业 4
 //
-var letterCount = function(str) {
-    /*
-    给定一个只包含字母的字符串，返回单个字母出现的次数
-    考察字典的概念和使用
-    返回值为包含数组的数组，格式如下（对数组中数组的顺序不做要求）
+/*
+给定一个只包含字母的字符串，返回单个字母出现的次数
+考察字典的概念和使用
+返回值为包含数组的数组，格式如下（对数组中数组的顺序不做要求）
 
-    // 可以使用 Object.keys 函数
-    var obj = {
-      foo: 1,
-      bar: 2,
+// 可以使用 Object.keys 函数
+var obj = {
+  foo: 1,
+  bar: 2,
+}
+Object.keys(obj)
+["foo", "bar"]
+
+参数 "hello"
+返回值 [['h', 1], ['e', 1], ['l', 2], ['o', 1]]
+*/
+var lower = 'abcdefghijklmnopqrstuvwxyz'
+var num = function(str) {
+    for (var i = 0; i < lower.length; i++) {
+        if (lower[i] == str) {
+            return i
+        }
     }
-    Object.keys(obj)
-    ["foo", "bar"]
-
-    参数 "hello"
-    返回值 [['h', 1], ['e', 1], ['l', 2], ['o', 1]]
-    */
+}
+//[1,2,2,2,3,4,3]统计其中重复数字的个数输出
+var processNum = function(list, immobilization) {
+    var n = 0
+    for (var i = 0; i < list.length; i++) {
+        if (list[i] == immobilization) {
+            n += 1
+        }
+    }
+    return n
+}
+// Object {h: 1, e: 1, l: 2, o: 1}变成题设要求的那样
+var processList = function(obj) {
+    newList = Object.keys(obj)
+    var list = []
+    var list1 = []
+    for (var i = 0; i < newList.length; i++) {
+        list.push(newList[i])
+        list.push(obj[newList[i]])
+        list1.push(list)
+        list = []
+    }
+    return list1
+}
+var letterCount = function(str) {
+    var obj = {}
+    var n = 0
+    var processNum1 = 0
+    var list = []
+    var newList = []
+    for (var i = 0; i < str.length; i++) {
+        n = num(str[i])
+        list.push(n)
+    }
+    for (var i = 0; i < list.length; i++) {
+        processNum1 = processNum(list, list[i])
+        log(processNum1)
+        obj[str[i]] = processNum1
+    }
+    var list1 = processList(obj)
+    return list1
 }
 
-
+    letterCount('hello')
 // 作业 5
 //
+/*
+param 是一个 object
+例子如下
+param 是 {
+    'foo': 1,
+    'bar': 'far',
+}
+返回如下 string, 顺序不做要求(foo bar 的顺序)
+foo=1&bar=far
+
+注意, 使用 Object.keys 函数
+*/
 var queryFromObject = function(param) {
-    /*
-    param 是一个 object
-    例子如下
-    param 是 {
+    var list = Object.keys(param)
+    log(list)
+    var str = ''
+    for (var i = 0; i < list.length; i++) {
+        var index = list[i]
+        var value = param[index]
+        if (i == list.length-1) {
+            str += `${list[i]}=${value}`
+        }
+        else {
+            str += `${list[i]}=${value}&`
+        }
+
+    }
+    return str
+}
+    param =  {
         'foo': 1,
         'bar': 'far',
     }
-    返回如下 string, 顺序不做要求(foo bar 的顺序)
-    foo=1&bar=far
-
-    注意, 使用 Object.keys 函数
-    */
-}
-
+    queryFromObject(param)
 
 // 作业 6
 //
-var argsFromQuery = function(queryString) {
-    /*
-    queryString 是一个 string
-    例子如下
-    queryString 是 foo=1&bar=far
-    返回如下 object, 顺序不做要求(foo bar 的顺序)
-    {
-        'foo': 1,
-        'bar': 'far',
-    }
-    */
+/*
+queryString 是一个 string
+例子如下
+queryString 是 foo=1&bar=far
+返回如下 object, 顺序不做要求(foo bar 的顺序)
+{
+    'foo': 1,
+    'bar': 'far',
 }
-
+*/
+var argsFromQuery = function(queryString) {
+    var list = queryString.split('&')
+    var str = {}
+    for (var i = 0; i < list.length; i++) {
+        var newList = list[i].split('=')
+        var key = newList[0]
+        var value = newList[1]
+        str[key] = value
+        newList = []
+    }
+    return str
+}
+    queryString = 'foo=1&bar=far&dudu=baby'
+    argsFromQuery(queryString)
 
 // 作业 7
 //
+/*
+利用上课板书, 实现 ajaxGet 函数, 用 GET 方法请求一个 URL
+url 是一个 URL
+callback 是一个函数, 在接受服务器响应后调用并传递参数给它
+*/
 var ajaxGet = function(url, callback) {
-    /*
-    利用上课板书, 实现 ajaxGet 函数, 用 GET 方法请求一个 URL
-    url 是一个 URL
-    callback 是一个函数, 在接受服务器响应后调用并传递参数给它
-    本题不会就放弃
-    */
+    var r = new XMLHttpRequest()
+    r.open('GET', '/login', true)
+    r.setRequestHeader('Content-Type', 'application/json')
+    r.onreadystatechange = function() {
+        if (true) {
+
+        }
+    }
 }
 
 
@@ -182,8 +268,6 @@ var ajax = function(request) {
     url, 请求的路径, string
     data, 请求发送的数据, 如果是 GET 方法则没这个值, string
     callback, 响应回调, function
-
-    本题不会就放弃, 本题带了一个用法在下方
     */
 }
 
