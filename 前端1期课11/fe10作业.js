@@ -43,6 +43,7 @@ var argsFromQuery = function(queryString) {
     for (var i = 0; i < pairs.length; i++) {
         var p = pairs[i]
         var kv = p.split('=')
+        console.log(kv)
         // ['foo', '1']
         args[kv[0]] = kv[1]
     }
@@ -63,25 +64,30 @@ var ajaxGet = function(url, callback) {
     r.open('GET', url, true)
     r.onreadystatechange = function(event) {
         if(r.readyState === 4) {
+            // r = event.target
+            // console.log(event)
             callback(r.response)
         }
     }
     r.send()
 }
-
-var url = 'http://vip.cocode.cc/uploads/tags.json'
+// 使用ajaxGet抓取数据并且处理
+var url = 'https://vip.cocode.cc/uploads/tags.json'
 ajaxGet(url, function(data){
-    console.log(data)
+    // console.log(data)
     var tags = JSON.parse(data)
     console.log(tags)
 })
 
-var pinsUrl = 'http://vip.cocode.cc/uploads/pins.json'
+// ---------------------------------
+var pinsUrl = 'https://vip.cocode.cc/uploads/pins.json'
 ajaxGet(pinsUrl, function(data) {
     var pins = JSON.parse(data)
     window.pins = pins
+    console.log(pins)
 })
-
+// 直接输出得到Object {pins: Array[10], tag: "美女", next: 169877563, prev: 169912738, cur_page: null…}
+// 其中pins内有10张图片，需要把图片拿出来，这里是得到所有的Key
 var keys = function(pins) {
     var l = []
     for (var i = 0; i < pins.length; i++) {
@@ -91,7 +97,7 @@ var keys = function(pins) {
     }
     return l
 }
-
+// 将Key append到界面里
 var addImgsByKeys = function(keys) {
     for (var i = 0; i < keys.length; i++) {
         var k = keys[i]
@@ -103,6 +109,8 @@ var addImgsByKeys = function(keys) {
 }
 // 作业 8
 //
+
+// vip.cocode.cc/login
 var ajax = function(request) {
     /*
     request 是一个 object, 有如下属性
@@ -139,10 +147,12 @@ var r = {
     method: 'POST',
     url: '/login',
     contentType:  'application/json',
+    // data服务器要求的是一个JSON格式的字符串
     data: data,
     callback: function(response) {
         console.log('响应', response)
         var res = JSON.parse(response)
+        // 登入之后的行为
         if (res.success) {
             window.location.href = '/'
         } else {

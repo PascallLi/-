@@ -230,10 +230,11 @@ var argsFromQuery = function(queryString) {
     var str = {}
     for (var i = 0; i < list.length; i++) {
         var newList = list[i].split('=')
-        var key = newList[0]
-        var value = newList[1]
-        str[key] = value
-        newList = []
+        // var key = newList[0]
+        // var value = newList[1]
+        // str[key] = value
+        // newList = []
+        str[newList[0]] = newList[1]
     }
     return str
 }
@@ -249,14 +250,17 @@ callback 是一个函数, 在接受服务器响应后调用并传递参数给它
 */
 var ajaxGet = function(url, callback) {
     var r = new XMLHttpRequest()
-    r.open('GET', '/login', true)
+    r.open('GET', url, true)
     r.setRequestHeader('Content-Type', 'application/json')
-    r.onreadystatechange = function() {
-        if (true) {
-
+    r.onreadystatechange = function(event) {
+        if (readyState === 4) {
+            callback(r.response)
         }
     }
+    r.send()
 }
+
+
 
 
 // 作业 8
