@@ -253,34 +253,53 @@ var ajaxGet = function(url, callback) {
     r.open('GET', url, true)
     r.setRequestHeader('Content-Type', 'application/json')
     r.onreadystatechange = function(event) {
-        if (readyState === 4) {
-            callback(r.response)
+        if (r.readyState === 4) {
+            // callback(r.response)
+            console.log(event)
+            console.log(r)
+            // callback(event.target.response)
         }
     }
     r.send()
 }
 
-
+var url = 'https://vip.cocode.cc/uploads/tags.json'
+ajaxGet(url, function(data){
+    var tags = JSON.parse(data)
+    console.log(tags)
+})
 
 
 // 作业 8
 //
-var ajax = function(request) {
-    /*
-    request 是一个 object, 有如下属性
-    method, 请求的方法, string
-    url, 请求的路径, string
-    data, 请求发送的数据, 如果是 GET 方法则没这个值, string
-    callback, 响应回调, function
-    */
-}
+/*
+request 是一个 object, 有如下属性
+method, 请求的方法, string
+url, 请求的路径, string
+data, 请求发送的数据, 如果是 GET 方法则没这个值, string
+callback, 响应回调, function
+*/
 
-var r = {
-    method: 'POST',
-    url: '/login',
-    data: 'username=gua',
-    callback: function(response) {
-        console.log('响应', response)
+var ajax = function(request) {
+    var r = new XMLHttpRequest()
+    r.open(request.method, request.url, true)
+    if (r.contentType != undefined) {
+        r.setRequestHeader('Content-Type', request.contentType)
+    }
+    if (r.onreadystatechange) {
+        if (r.readyState == 4) {
+            var response = JSON.parse(r.response)
+            request.callback(response)
+        }
+    }
+    if (request.method == 'GET') {
+        r.send()
+    }else {
+        r.send(request.data)
     }
 }
-ajax(r)
+
+var account = {
+    username: 'pascall',
+    password: '123',
+}

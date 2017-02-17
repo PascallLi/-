@@ -142,6 +142,7 @@ var account = {
     'username': 'xiaogua',
     password: '123'
 }
+
 var data = JSON.stringify(account)
 var r = {
     method: 'POST',
