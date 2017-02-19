@@ -82,7 +82,6 @@ var binary = function(n) {
 }
 var format = function(num, len) {
     var num = binary(num)
-    var len = 8
     for (var i = 0; i < len; i++) {
         if (num.length < len) {
             num =  '0' + num
@@ -91,7 +90,7 @@ var format = function(num, len) {
     return num
 }
 
-format(7)
+format(7, 8)
 
 // 作业 4
 //
@@ -201,6 +200,7 @@ var divisible3 = function(len, strNew) {
     }
     return strEnd
 }
+//  分成4个单元
 var convert = function(strNew3) {
     var start = 0
     var s = ''
@@ -221,6 +221,7 @@ var base64Encode = function(s) {
     if (s.length%3 == 0) {
         return divisible3(s.length, strNew)
     } else {
+        // lenEnd 等于余数是多少，然后补0,凑成整除3的数
         var lenEnd = 3 - s.length%3
         // console.log(s.length%3, len)
         for (var i = 0; i < lenEnd; i++) {
@@ -228,6 +229,7 @@ var base64Encode = function(s) {
             console.log('strNew', strNew)
         }
         var string = divisible3(s.length+lenEnd, strNew)
+        // 最后的余数编码的值需要变成'='
         // 把最后的尾巴变成'=', 关于字符串替换,以下做法过于繁琐
         var stringEnd = string.slice(0,string.length - lenEnd)
         for (var i = (string.length - lenEnd); i < string.length; i++) {
@@ -241,14 +243,56 @@ base64Encode('M')
 
 // 作业 8
 //
+/*
+s 是一个 base64 编码后的字符串
+解码 s 并返回
+例如 base64Decode('TWFu') 返回 'Man'
+*/
+// 原始信息        M        a        n
+// ASCII         77       7        110
+// 二进制         01001101 01100001 01101110
+// 4 个单元       010011 010110 000101 101110
+// 每个单元转换后  19  22  5  46
+
+// 先生成二进制,拆开成4个单元
+var convert2 = function(s) {
+    var str1 = ''
+    for (var i = 0; i < s.length; i++) {
+        var index = s[i]
+        for (var j = 0; j < str.length; j++) {
+            if (index == str[j]) {
+                // log('进入判断1')
+                // log(format(j, 6))
+                // log(str1)
+                str1 += format(j, 6)
+            }
+        }
+        if (index == '=') {
+            str1 += '000000'
+        }
+    }
+    return str1
+}
+var str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 var base64Decode = function(s) {
-    /*
-    s 是一个 base64 编码后的字符串
-    解码 s 并返回
-    例如 base64Decode('TWFu') 返回 'Man'
-    */
+    var str = ''
+    var strNew = convert2(s)
+    var start = 0
+    for (var i = 0; i < strNew.length/8; i++) {
+        log(strNew.slice(start, start+8))
+        var num = int(strNew.slice(start, start+8))
+        if (num == 0) {
+            continue
+        }
+        else {
+            str += charFromAscii(num)
+        }
+        start += 8
+    }
+    return str
 }
 
+base64Decode('TQ==')
 
 
 

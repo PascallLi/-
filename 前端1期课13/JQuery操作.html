@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>JQuery 操作</title>
+    <style media="screen">
+        .done {
+            color: lightgray;
+            text-decoration: line-through;
+        }
+        .modal-alert {
+            position: fixed;
+        }
+    </style>
+     <!-- 加入JQuery -->
+    <script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.js"></script>
+    </head>
+    <body>
+        <div class="main">
+            <div class="form">
+                <input id="id-input-add" name="name" value="">
+                <br>
+                <button id="id-button-add" type="button" name="button">Add</button>
+            </div>
+            <div class="" id="id-div-todo">
+                <div class="todo-cell" data-id='401'>
+                    <span><h1>hello</h1></span>
+                    <div class="">
+                        <button type="button" name="button" class="edit-button">edit</button>
+                        <button type="button" name="button" class="delete-button">delete</button>
+                        <button type="button" name="button" class="complete-button">complete</button>
+                    </div>
+                    <br>
+                </div>
+                <div class="todo-cell" data-id='101'>
+                    <span><h1>POWER</h1></span>
+                    <div class="">
+                        <button type="button" name="button" class="edit-button">edit</button>
+                        <button type="button" name="button" class="delete-button">delete</button>
+                        <button type="button" name="button" class="complete-button">complete</button>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+        <script>
+        var todoTemplete = function(todo) {
+            var t = `
+            <div class="todo-cell" data-id='401'>
+            <span>${todo}</span>
+                <div class="">
+                    <button type="button" name="button" class="edit-button">edit</button>
+                    <button type="button" name="button" class="delete-button">delete</button>
+                    <button type="button" name="button" class="complete-button">complete</button>
+                </div>
+                <br>
+            </div>
+            `
+            return t
+        }
+        $('#id-button-add').on('click', function(event) {
+            var todo = $('#id-input-add').val()
+            $('#id-div-todo').append(todoTemplete(todo))
+        })
+        // 选择器
+        // document.querySelectorAll('.todo-cell') = $('.todo-cell')
+
+        // find
+        // var form = $('.form')
+        // form.find('#in-input-add').val()
+
+        // closest(从父节点找) 非事件委托形式
+        // $('.delete-button').on('click', function(event){
+        //     var button = $(event.target)
+        //     button.closest('.todo-cell').remove()
+        // })
+
+        // 事件委托形式
+        $('#id-div-todo').on('click', '.delete-button', function(event){
+            var button = $(event.target)
+            button.closest('.todo-cell').remove()
+        })
+        // 点击完成按钮，todo内容出现横线
+        $('#id-div-todo').on('click', '.complete-button', function(event){
+            var button = $(event.target)
+            var span = button.closest('.todo-cell').find('span')
+            // 该方法检查每个元素中指定的类。如果不存在则添加类，如果已设置则删除之。这就是所谓的切换效果。
+            span.toggleClass('done')
+        })
+        // text html 区别
+        $('#id-div-todo').on('click', '.complete-button', function(event){
+            var button = $(event.target)
+            var span = button.closest('.todo-cell').find('span')
+            // 该方法检查每个元素中指定的类。如果不存在则添加类，如果已设置则删除之。这就是所谓的切换效果。
+            var t = span.text()
+            console.log('span.text', t)
+        })
+
+        // $('span')[0].text() 这样是不行的，因为JQery只是一个dom,不是数组
+        // 需要使用$('span')[0].innerHTML 包含标签
+        // $('span')[0].innerText 只有内部内容
+        // 需要转换成JQuery类型--- $($('span')[0]).text() == $('span')[0].innerText
+
+        // val attr
+        $('input').val()
+        $('input').attr('name')
+        $('input').attr('id')
+
+        // 获取data-id
+        // Dom API获取如下
+        var domDiv = $('.todo-cell')[0]
+        domDiv.dataset.id
+        // 结果是401
+
+        // JQuery API 如下
+        var jqdiv = $($('.todo-cell')[0])
+        jqdiv.data('id')
+
+        // each
+        $('.todo-cell').each(function(i,e) {
+            console.log(i, e)
+        })
+
+        // map操作
+        // 对每个数组中的元素调用函数得到返回值组成新的数组
+        var foo = [1,2,3,4,5]
+        var bar = $.map(foo, function(value){
+            retrun value *　value
+        })
+
+        // grep 相当于 filter 函数, 以前上课写过的,符合条件的会被留下来
+        var far = $.grep(foo, function(value){
+            return value % 2 == 0
+        })
+
+        </script>
+    </body>
+</html>
