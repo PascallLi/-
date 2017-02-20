@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>13课作业</title>
+    <style>
+        .modal-alert {
+            z-index: 100;
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            opacity: 0.5;
+            background: black;
+            color: white;
+        }
+        .modal-title {
+            position:relative;
+            top: 40%;
+            left: 40%;
+        }
+    </style>
+    <script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.js"></script>
+    <script src="./13课作业.js"></script>
+    </head>
+    <body>
+        <div class="main">
+            <button class='start-alert' type="button" name="button">弹框开始</button>
+        </div>
+        <script>
+            GuaAlert('title', 'message')
+        </script>
+    </body>
+</html>

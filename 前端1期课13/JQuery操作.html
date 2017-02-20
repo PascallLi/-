@@ -91,7 +91,6 @@
         $('#id-div-todo').on('click', '.complete-button', function(event){
             var button = $(event.target)
             var span = button.closest('.todo-cell').find('span')
-            // 该方法检查每个元素中指定的类。如果不存在则添加类，如果已设置则删除之。这就是所谓的切换效果。
             var t = span.text()
             console.log('span.text', t)
         })
@@ -125,14 +124,28 @@
         // 对每个数组中的元素调用函数得到返回值组成新的数组
         var foo = [1,2,3,4,5]
         var bar = $.map(foo, function(value){
-            retrun value *　value
+            return value * value
         })
+        console.log(bar)
 
         // grep 相当于 filter 函数, 以前上课写过的,符合条件的会被留下来
-        var far = $.grep(foo, function(value){
+        var baz = $.grep(foo, function(value){
             return value % 2 == 0
         })
 
+        // JQuery AJAX
+        var request = {
+            url: '/uploads/tags.json',
+            type: 'get',
+            contentType: 'application/jsons',
+            success: function() {
+                console.log(arguments)
+            }
+            error: function() {
+                console.log(arguments)
+            }
+        }
+        $.ajax(request)
         </script>
     </body>
 </html>
