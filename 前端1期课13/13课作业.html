@@ -29,7 +29,13 @@
             <button class='start-alert' type="button" name="button">弹框开始</button>
         </div>
         <script>
-            GuaAlert('title', 'message')
+            // GuaAlert('title', 'message')
+            var log = function() {
+                console.log.apply(console, arguments)
+            }
+            // GuaAlert2('LEO', 'Talent', log)
+            GuaPrompt('LEO', callback)
+            // GuaActions('title', ['1234567890', '32'], callback)
         </script>
     </body>
 </html>
