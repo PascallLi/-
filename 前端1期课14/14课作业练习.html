@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>fe 13</title>
+        <style>
+            .done {
+                color: lightgray;
+                text-decoration: line-through;
+            }
+        
+        </style>
+        <script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.js"></script>
+        <script src="14课作业练习.js"></script>
+        <script>
+        // 直接写这里是没有效果的，因为Body还没有执行
+        $('document').ready(function(){
+            GuaAlert('注意', '这是一个弹窗')
+        })
+        </script>
+    </head>
+    <body>
+        <div class="main">
+            <div class="form">
+                <input id="id-input-add" name="name" value="">
+                <br>
+                <button id='id-button-add' type="button" name="button">Add</button>
+            </div>
+            <div class="" id='id-div-todo'>
+                <!-- // data-* 自定义属性,特殊写法 -->
+                <div class="todo-cell" data-id='401'>
+                    <span><h1>hello</h1></span>
+                    <div class="">
+                        <button class='edit-button' type="button" name="button">edit</button>
+                        <button class='delete-button' type="button" name="button">delete</button>
+                        <button class='complete-button' type="button" name="button">complete</button>
+                    </div>
+                </div>
+                <div class="todo-cell" data-id='101'>
+                    <span><h1>world</h1></span>
+                    <div class="">
+                        <button class='edit-button' type="button" name="button">edit</button>
+                        <button class='delete-button' type="button" name="button">delete</button>
+                        <button class='complete-button' type="button" name="button">complete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+        var todoTemplete = function(todo) {
+            var t = `
+            <div class="todo-cell">
+                <span>${todo}</span>
+                <div class="">
+                    <button class='edit-button' type="button" name="button">edit</button>
+                    <button class='delete-button' type="button" name="button">delete</button>
+                    <button class='complete-button' type="button" name="button">complete</button>
+                </div>
+            </div>
+            `
+            return t
+        }
+
+        $('#id-button-add').on('click', function(event) {
+            var todo = $('#id-input-add').val()
+            $('#id-div-todo').append(todoTemplete(todo))
+        })
+
+        // jQuery 事件委托的方式 因为在绑定的时候没有额外的元素, 所以需要事件委托
+        $('#id-div-todo').on('click', '.delete-button', function(event){
+            console.log('click')
+
+            var button = $(event.target)
+            button.closest('.todo-cell').remove()
+        })
+
+        $('#id-div-todo').on('click', '.complete-button', function(event){
+            console.log('click 完成')
+            var button = $(event.target)
+            var span = button.closest('.todo-cell').find('span')
+            span.toggleClass('done')
+        })
+
+        $('#id-div-todo').on('click', '.edit-button', function(event){
+            console.log('click edit')
+            var button = $(event.target)
+            var span = button.closest('.todo-cell').find('span')
+            var t = span.text()
+            console.log('span.text', t)
+        })
