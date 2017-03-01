@@ -8,14 +8,24 @@
                 color: lightgray;
                 text-decoration: line-through;
             }
-        
+
         </style>
         <script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.js"></script>
         <script src="14课作业练习.js"></script>
         <script>
         // 直接写这里是没有效果的，因为Body还没有执行
         $('document').ready(function(){
-            GuaAlert('注意', '这是一个弹窗')
+            // GuaAlert('请输入todo', function(clickOk, input){
+            //     console.log(clickOk, input)
+            // })
+            var actions = [
+                'LEO',
+                'Talent',
+                'Genious',
+            ]
+            GuaAlert('选择更新时间', actions, function(index){
+                console.log(index)
+            })
         })
         </script>
     </head>
@@ -69,9 +79,13 @@
         // jQuery 事件委托的方式 因为在绑定的时候没有额外的元素, 所以需要事件委托
         $('#id-div-todo').on('click', '.delete-button', function(event){
             console.log('click')
-
-            var button = $(event.target)
-            button.closest('.todo-cell').remove()
+            // 弹窗确认是否删除
+            GuaAlert('注意', '确认要删除吗', function(r){
+                if (r) {
+                    var button = $(event.target)
+                    button.closest('.todo-cell').remove()
+                }
+            })
         })
 
         $('#id-div-todo').on('click', '.complete-button', function(event){
@@ -88,3 +102,5 @@
             var t = span.text()
             console.log('span.text', t)
         })
+    </script>
+</body>

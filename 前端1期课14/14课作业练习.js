@@ -1,4 +1,19 @@
-var GuaAlert = function(title, message) {
+var buttonTemplate = function(title, index) {
+    // title, index 输出List中元素与对应的下标
+    var t = `
+        <button class='modal-action-button' data-index='${index}'>${title}</button>
+    `
+    return t
+}
+// 将actions中的index和title以Button字符串的形式模板字符串进HTML中
+var GuaAlert = function(title, actions, callback) {
+    // var actionButtons = $.map(actions, buttonTemplate).join('')
+    var buttons = []
+    for (var i = 0; i < actions.length; i++) {
+        var a = actions[i];
+        buttons.push(buttonTemplate(a, i));
+    }
+    var actionButtons = buttons.join('')
     var t  = `
     <div class="modal-container modal-delete">
         <div class="modal-mask"></div>
@@ -7,15 +22,20 @@ var GuaAlert = function(title, message) {
                     ${title}
                 </div>
                 <div class="modal-message">
-                 ${message}
+                    ${actionButtons}
                  </div>
-
-                <button class="modal-button" type="button" name="button">ok</button>
+                 <div class="model-control">
+                    <button class="modal-button" type="button" name="button" data-type='ok'>OK</button>
+                    <button class="modal-button modal-action-button" type="button" name="button" data-index='-1'>Cancel</button>
+                </div>
         </div>
     </div>
     `
     $('body').append(t)
     // css
+    // modal-mask在modal-container中插入,独立于背景
+    // modal-center 在中心处往上偏移50%, 达到绝对的垂直居中
+    // 父节点属性model-control 设置font-size 0px 去除button的缝隙
     var css = `
     <style class="modal-delete">
         .modal-container {
@@ -48,23 +68,34 @@ var GuaAlert = function(title, message) {
         .modal-title {
             text-align: center;
             font-size:20px;
-
         }
         .modal-message {
             padding: 10px 5px;
             background:white;
         }
+        .modal-input {
+            witdh: 100%;
+        }
         .modal-button {
-            width: 100%;
+            width: 50%;
             height: 100%;
             font-size: 22px;
-            border: 0;
+            border: 1px white solid;
+        }
+        .model-control {
+            font-size: 0;
         }
     </style>
     `
     $('head').append(css)
-    $('.modal-button').on('click', function(){
+    // 点击actions里面的事件的时候，console显示相应的事件名字+index
+    $('.modal-action-button').on('click', function(){
         console.log('click ok')
-        $('.modal-delete').remove()
+        var index = $(event.target).data('index')
+        callback(index)
+        if (index === -1) {
+            callback(false)
+            $('.modal-delete').remove()
+        }
     })
 }
