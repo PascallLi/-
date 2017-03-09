@@ -92,7 +92,11 @@
             var button = $(event.target)
             var span = button.closest('.todo-cell').find('span')
             var t = span.text()
+            var s = span.html()
             console.log('span.text', t)
+            console.log('span.html', s)
+            // span.text hello
+            // span.html <h1>hello</h1>
         })
 
         // $('span')[0].text() 这样是不行的，因为JQery只是一个dom,不是数组
@@ -134,18 +138,18 @@
         })
 
         // JQuery AJAX
-        var request = {
-            url: '/uploads/tags.json',
-            type: 'get',
-            contentType: 'application/jsons',
-            success: function() {
-                console.log(arguments)
-            }
-            error: function() {
-                console.log(arguments)
-            }
-        }
-        $.ajax(request)
+        // var request = {
+        //     url: '/uploads/tags.json',
+        //     type: 'get',
+        //     contentType: 'application/jsons',
+        //     success: function() {
+        //         console.log(arguments)
+        //     },
+        //     error: function() {
+        //         console.log(arguments)
+        //     }
+        // }
+        // $.ajax(request)
         </script>
     </body>
 </html>

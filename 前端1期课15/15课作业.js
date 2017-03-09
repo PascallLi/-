@@ -62,7 +62,6 @@ var GuaOptions2 = function(options) {
     $('body').on('click', function(event){
         if ($(event.target).hasClass('button-all')) {
             $('.input-checkbox').attr('checked', 'checked')
-
         }
         else if (($(event.target).hasClass('button-cancel'))) {
             $('.input-checkbox').removeAttr('checked', 'checked')
@@ -93,8 +92,6 @@ var GuaOptions3 = function(options) {
             $($('.checkbox')[i]).find('.input-checkbox').attr('checked', 'checked')
         }
     }
-
-
 }
 
 
