@@ -104,5 +104,13 @@ save 按钮点击的时候会保存当前的 options 状态到 localStorage(用 
 load 按钮点击的时候会从 localStorage 中读取保存的信息并更新界面
 */
 var GuaOptions4 = function(options) {
-    
+
+}
+var saveTodos = function() {
+    var s = JSON.stringify(todoList)
+    localStorage.todoList = s
+}
+var loadTodos = function() {
+    var s = localStorage.todoList
+    return JSON.parse(s)
 }
