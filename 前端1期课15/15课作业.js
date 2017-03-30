@@ -87,7 +87,7 @@ checked 是布尔值, 表示是否打勾
 var GuaOptions3 = function(options) {
     for (var i = 0; i < options.length; i++) {
         var str = options[i].text
-        $('body').append(template(str))
+        $('.options').append(template(str))
         if (options[i].checked) {
             $($('.checkbox')[i]).find('.input-checkbox').attr('checked', 'checked')
         }
@@ -103,14 +103,51 @@ var GuaOptions3 = function(options) {
 save 按钮点击的时候会保存当前的 options 状态到 localStorage(用 JSON)
 load 按钮点击的时候会从 localStorage 中读取保存的信息并更新界面
 */
-var GuaOptions4 = function(options) {
-
+var log = function() {
+    console.log.apply(null, arguments)
 }
-var saveTodos = function() {
-    var s = JSON.stringify(todoList)
-    localStorage.todoList = s
+var GuaOptions4 = function(options) {
+    initTodos()
+    $('body').append(`
+        <div class='button'>
+            <button class='save'>save</button>
+            <button class='load'>load</button>
+        </div>
+        `)
+    $('.options').on('click',function(event){
+        // 这里需要知道是第几个选项前面的框框打上了勾
+        var input = $(event.target).closest('.input-checkbox')
+        input.attr('checked', 'checked')
+        // 这里用原生查找 关键字 继续百度查一下教程改进
+        // log(event.target.parentElement.innerText)
+        for (var i = 0; i < options.length; i++) {
+            if (event.target.parentElement.innerText == options[i].text) {
+                options[i].checked = true
+                log(options)
+            }
+        }
+    })
+    $('.button').on('click', function(event){
+        if ($(event.target).hasClass('save')) {
+            saveTodos(options)
+        }
+        if ($(event.target).hasClass('load')) {
+            initTodos()
+        }
+    })
+}
+var initTodos = function() {
+    optionsNew = loadTodos()
+    log(optionsNew)
+    GuaOptions3(optionsNew)
+}
+
+var saveTodos = function(options) {
+    var s = JSON.stringify(options)
+    localStorage.options = s
+    log(s)
 }
 var loadTodos = function() {
-    var s = localStorage.todoList
+    var s = localStorage.options
     return JSON.parse(s)
 }
